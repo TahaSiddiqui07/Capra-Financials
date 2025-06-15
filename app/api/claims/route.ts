@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import type { Database } from '@/types/supabase'
 import { sendEmail } from '@/lib/sendEmail'
+import { EmailTemplate, AdminEmailTemplate } from '@/components/EmailTemplate'
 
 export async function POST(request: Request) {
   try {
@@ -49,19 +50,28 @@ export async function POST(request: Request) {
 
       // Send email to user using Resend API (via utility)
       try {
+        // Send email to the user
         await sendEmail({
           to: email,
           subject: 'Your claim is being investigated',
-          html: `<p>Dear ${fullName},</p>
-                 <p>Thank you for submitting your claim. Our team is now investigating your case and will contact you within 24 hours.</p>
-                 <p><b>Claim details:</b></p>
-                 <ul>
-                   <li><b>Name:</b> ${fullName}</li>
-                   <li><b>Email:</b> ${email}</li>
-                   <li><b>Phone:</b> ${phone}</li>
-                   <li><b>Description:</b> ${description}</li>
-                 </ul>
-                 <p>Best regards,<br/>Capra Financials Team</p>`
+          react: EmailTemplate({ 
+            firstName: fullName,
+            email,
+            phone,
+            description
+          })
+        })
+        
+        // Also send a copy to basharsbackup@gmail.com
+        await sendEmail({
+          to: 'basharsbackup@gmail.com',
+          subject: `New Claim Submission: ${fullName}`,
+          react: AdminEmailTemplate({
+            firstName: fullName,
+            email,
+            phone,
+            description
+          })
         })
       } catch (emailError) {
         console.error('Error sending email via Resend:', emailError)

@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { User, Mail, Phone, FileText, Loader2, AlertCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { sendClaimEmails } from "@/app/claim/page"
 
 export function ClaimForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -36,6 +37,7 @@ export function ClaimForm() {
     setError(null)
 
     try {
+      // Store data in the database
       const response = await fetch('/api/claims', {
         method: 'POST',
         headers: {
@@ -48,6 +50,14 @@ export function ClaimForm() {
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to submit claim')
+      }
+
+      // Send emails directly from the client side
+      try {
+        await sendClaimEmails(formData)
+      } catch (emailError) {
+        console.error('Error sending emails from client:', emailError)
+        // Continue with the flow even if email sending fails
       }
 
       setIsLoading(false)

@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Suspense } from "react"
+import { EmailTemplate, AdminEmailTemplate } from "@/components/EmailTemplate"
 
 // Separate client component for animated content
 const AnimatedContent = () => {
@@ -41,6 +42,30 @@ const AnimatedContent = () => {
       </motion.div>
     </>
   )
+}
+
+// Function to send emails using the API endpoint
+export async function sendClaimEmails(formData: { fullName: string; email: string; phone: string; description: string }) {
+  try {
+    const response = await fetch('/api/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to send emails');
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return { success: false, error };
+  }
 }
 
 export default function ClaimPage() {
