@@ -15,8 +15,8 @@ export async function sendEmail({ to, subject, html, text, react }: SendEmailPar
   }
 
   try {
-    // Always use Resend's onboarding email address
-    const fromEmail = 'Capra Financials <onboarding@resend.dev>';
+    // Use the caprafinancials.com domain for sending emails
+    const fromEmail = 'Capra Financials <noreply@caprafinancials.com>';
     
     // Create the base email options
     const emailOptions = {

@@ -5,6 +5,7 @@ export const resend = new Resend(process.env.RESEND_API_KEY || '');
 
 // Domain configuration constants
 export const DOMAIN_ID = process.env.RESEND_DOMAIN_ID || '';
+export const DOMAIN_NAME = 'caprafinancials.com';
 
 // Configure domain settings
 export async function configureDomainSettings(options?: {
