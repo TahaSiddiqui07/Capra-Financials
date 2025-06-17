@@ -26,7 +26,7 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Professional debt recovery solutions to improve your cash flow and business health
+              No recovery, no fees — it's that simple. We handle debt recovery through litigation with zero upfront costs, so you only pay when we succeed.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start items-center w-full px-4 sm:px-0"
